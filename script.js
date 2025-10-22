@@ -20,13 +20,9 @@ class DailyJournal {
         // Check for existing session
         await this.checkAuth();
         
-        // Add welcome screen event listeners (always needed)
-        document.getElementById('welcomeSignupBtn').addEventListener('click', () => this.showAuthModal('signup'));
-        document.getElementById('welcomeLoginBtn').addEventListener('click', () => this.showAuthModal('login'));
-        
-        // Show welcome screen if not logged in
+        // If not logged in, redirect to login page
         if (!this.user) {
-            this.showWelcomeScreen();
+            window.location.href = 'login.html';
             return;
         }
         
@@ -71,24 +67,8 @@ class DailyJournal {
         document.getElementById('exportData').addEventListener('click', () => this.exportData());
         document.getElementById('clearData').addEventListener('click', () => this.clearAllData());
 
-        // Authentication event listeners
-        document.getElementById('loginBtn').addEventListener('click', () => this.showAuthModal('login'));
-        document.getElementById('signupBtn').addEventListener('click', () => this.showAuthModal('signup'));
+        // Logout event listener
         document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
-        document.getElementById('authForm').addEventListener('submit', (e) => this.handleAuth(e));
-        document.getElementById('switchToSignup').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showAuthModal('signup');
-        });
-        document.getElementById('switchToLogin').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showAuthModal('login');
-        });
-        document.getElementById('forgotPassword').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showPasswordResetModal();
-        });
-        // Close button event listener - will be added when modal is shown
 
         // Load and display entries
         await this.loadEntries();
@@ -269,24 +249,18 @@ class DailyJournal {
                     this.showAuthModal('login');
                 }
             } else {
-                console.log('Attempting login with:', email);
                 const { data, error } = await this.supabase.auth.signInWithPassword({
                     email,
                     password
                 });
                 
-                if (error) {
-                    console.error('Login error:', error);
-                    throw error;
-                }
+                if (error) throw error;
                 
-                console.log('Login successful:', data);
                 this.user = data.user;
                 this.updateAuthUI(true);
                 this.hideAuthModal();
                 
                 // Re-initialize the app for logged-in user
-                console.log('Re-initializing app...');
                 await this.initializeLoggedInApp();
                 
                 this.showNotification('Logged in successfully!', 'success');
@@ -303,9 +277,13 @@ class DailyJournal {
         await this.supabase.auth.signOut();
         this.user = null;
         this.entries = [];
-        this.updateAuthUI(false);
         this.displayEntries();
         this.showNotification('Logged out successfully!', 'success');
+        
+        // Redirect to login page
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1000);
     }
 
     showError(message, errorDivId = 'authError') {

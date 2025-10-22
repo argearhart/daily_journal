@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MindQuill</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+        
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-btn:hover {
+            background: #2563eb;
+        }
+        
+        .auth-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .auth-switch a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .success-message {
+            background: #f0fdf4;
+            color: #16a34a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .forgot-password a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgot-password a:hover {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>🖋️ MindQuill</h1>
+                <p>Your Personal Growth Companion</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" id="loginBtn" class="auth-btn">Login</button>
+            </form>
+            
+            <!-- Sign Up Form (hidden by default) -->
+            <form id="signupForm" style="display: none;">
+                <div class="form-group">
+                    <label for="signupEmail">Email:</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" id="signupBtn" class="auth-btn">Sign Up</button>
+            </form>
+            
+            <!-- Password Reset Form (hidden by default) -->
+            <form id="resetForm" style="display: none;">
+                <div class="form-group">
+                    <label for="resetEmail">Email:</label>
+                    <input type="email" id="resetEmail" required>
+                </div>
+                <button type="submit" id="resetBtn" class="auth-btn">Send Reset Email</button>
+            </form>
+            
+            <div class="auth-switch">
+                <p id="switchText">Don't have an account? <a href="#" id="switchToSignup">Sign up</a></p>
+                <p class="forgot-password"><a href="#" id="forgotPassword">Forgot your password?</a></p>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <!-- Login Script -->
+    <script src="login.js"></script>
+</body>
+</html>

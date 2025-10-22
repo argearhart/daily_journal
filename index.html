@@ -25,49 +25,7 @@
             <p>Log your daily experiences, feelings, food, and events</p>
         </header>
 
-        <!-- Welcome Screen -->
-        <div id="welcomeScreen" class="welcome-screen">
-            <div class="welcome-content">
-                <div class="welcome-header">
-                    <h1>🖋️ MindQuill</h1>
-                    <p class="welcome-subtitle">Your Personal Growth Companion</p>
-                </div>
-                
-                <div class="welcome-description">
-                    <h2>Track Your Journey, Discover Your Patterns</h2>
-                    <p>MindQuill helps you build better habits and understand yourself through intelligent journaling. Track your wellness, exercise, learning, creativity, and social interactions all in one place.</p>
-                </div>
-                
-                <div class="feature-highlights">
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3>Smart Analytics</h3>
-                        <p>Discover patterns in your mood, energy, and activities with beautiful visualizations.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3>Quick Logging</h3>
-                        <p>Log your day in seconds with smart quick-add buttons and streamlined forms.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3>Private & Secure</h3>
-                        <p>Your data is encrypted and private. Only you can see your personal insights.</p>
-                    </div>
-                </div>
-                
-                <div class="welcome-actions">
-                    <button id="welcomeSignupBtn" class="welcome-btn primary">Get Started</button>
-                    <button id="welcomeLoginBtn" class="welcome-btn secondary">I Already Have an Account</button>
-                </div>
-                
-                <div class="welcome-footer">
-                    <p>Join thousands of users building better habits with MindQuill</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="main-content" style="display: none;">
+        <div class="main-content">
             <!-- Entry Form Section -->
             <section class="entry-section">
                 <h2>Add New Entry</h2>
@@ -490,48 +448,6 @@
                     <p><strong>You Own Your Data:</strong> Export and download your entries anytime.</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Authentication Modal -->
-    <div id="authModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="authTitle">Login</h2>
-            <form id="authForm">
-                <div class="form-group">
-                    <label for="authEmail">Email:</label>
-                    <input type="email" id="authEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="authPassword">Password:</label>
-                    <input type="password" id="authPassword" required>
-                </div>
-                <button type="submit" id="authSubmitBtn">Login</button>
-            </form>
-            <p id="authSwitch">
-                Don't have an account? <a href="#" id="switchToSignup">Sign up</a><br>
-                <a href="#" id="forgotPassword">Forgot your password?</a>
-            </p>
-            <div id="authError" class="error-message" style="display: none;"></div>
-        </div>
-    </div>
-
-    <!-- Password Reset Modal -->
-    <div id="passwordResetModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="passwordResetTitle">Reset Password</h2>
-            <form id="passwordResetForm">
-                <div class="form-group">
-                    <label for="resetEmail">Email:</label>
-                    <input type="email" id="resetEmail" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" id="passwordResetSubmitBtn">Send Reset Email</button>
-                </div>
-                <div id="passwordResetError" class="error-message" style="display: none;"></div>
-            </form>
         </div>
     </div>
 
