@@ -188,7 +188,8 @@ class DailyJournal {
             title: document.getElementById('entryTitle').value,
             content: document.getElementById('entryContent').value,
             date: document.getElementById('entryDate').value,
-            time: document.getElementById('entryTime').value
+            time: document.getElementById('entryTime').value,
+            tags: [] // Initialize tags as empty array
         };
 
         // Add wellness data if it's a wellness entry
@@ -334,7 +335,7 @@ class DailyJournal {
             events: '📅 Events'
         };
 
-        const tagsHTML = entry.tags.length > 0 
+        const tagsHTML = (entry.tags && entry.tags.length > 0) 
             ? `<div class="entry-tags">${entry.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
             : '';
 
