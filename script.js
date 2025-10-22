@@ -240,6 +240,11 @@ class DailyJournal {
 
             if (error) throw error;
 
+            // Ensure entries array is initialized
+            if (!this.entries) {
+                this.entries = [];
+            }
+
             // Add the new entry to our local array
             this.entries.unshift(data[0]);
             this.displayEntries();
@@ -312,8 +317,13 @@ class DailyJournal {
     }
 
     displayEntries(entriesToShow = null) {
-        const entries = entriesToShow || this.entries;
+        const entries = entriesToShow || this.entries || [];
         const container = document.getElementById('entriesContainer');
+        
+        if (!container) {
+            console.error('Entries container not found');
+            return;
+        }
         
         if (entries.length === 0) {
             container.innerHTML = '<p class="no-entries">No entries found. Try adjusting your search or add a new entry!</p>';
