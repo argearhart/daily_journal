@@ -8,7 +8,7 @@ A comprehensive daily journaling application with tracking for wellness, exercis
 - ⚡ **Quick Add Buttons**: Fast logging with pre-filled common activities
 - 📊 **Analytics Dashboard**: Visual insights into your patterns and trends
 - 🔍 **Smart Search**: Find entries by type, date, time, or content
-- 🔐 **Secure Authentication**: User accounts with Supabase
+- 🔐 **Secure Authentication**: User accounts with Supabase and password reset
 - 📱 **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 - 🚀 **Real-time Sync**: Data syncs across all your devices instantly
 - 📤 **Export Data**: Download your entries as CSV for external analysis
@@ -16,10 +16,11 @@ A comprehensive daily journaling application with tracking for wellness, exercis
 
 ## 🚀 Quick Start
 
-1. **Sign Up**: Create your personal account
-2. **Start Logging**: Use quick-add buttons for fast entries or detailed forms
-3. **View Dashboard**: Track your progress and discover patterns
-4. **Export Data**: Download your journal entries anytime
+1. **Visit the App**: Open `login.html` to get started
+2. **Sign Up**: Create your personal account
+3. **Start Logging**: Use quick-add buttons for fast entries or detailed forms
+4. **View Dashboard**: Track your progress and discover patterns
+5. **Export Data**: Download your journal entries anytime
 
 ## 🛠️ Tech Stack
 
@@ -67,7 +68,9 @@ After deployment, update your Supabase project:
 
 ```
 mindquill/
-├── index.html          # Main application
+├── index.html          # Main application (requires login)
+├── login.html          # Dedicated login/signup page
+├── login.js            # Authentication logic
 ├── styles.css          # Styling and responsive design
 ├── script.js           # Application logic and Supabase integration
 ├── config.js           # Supabase configuration
