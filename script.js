@@ -84,6 +84,10 @@ class DailyJournal {
             e.preventDefault();
             this.showAuthModal('login');
         });
+        document.getElementById('forgotPassword').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.showPasswordResetModal();
+        });
         // Close button event listener - will be added when modal is shown
 
         // Load and display entries
@@ -182,6 +186,60 @@ class DailyJournal {
         document.getElementById('authForm').reset();
     }
 
+    showPasswordResetModal() {
+        const modal = document.getElementById('passwordResetModal');
+        const closeBtn = modal.querySelector('.close');
+        
+        modal.style.display = 'block';
+        
+        // Close button functionality
+        closeBtn.onclick = () => this.hidePasswordResetModal();
+        
+        // Close when clicking outside modal
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                this.hidePasswordResetModal();
+            }
+        };
+        
+        // Form submission
+        document.getElementById('passwordResetForm').addEventListener('submit', (e) => this.handlePasswordReset(e));
+    }
+
+    hidePasswordResetModal() {
+        document.getElementById('passwordResetModal').style.display = 'none';
+        document.getElementById('passwordResetForm').reset();
+        document.getElementById('passwordResetError').style.display = 'none';
+    }
+
+    async handlePasswordReset(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('resetEmail').value;
+        const submitBtn = document.getElementById('passwordResetSubmitBtn');
+        const errorDiv = document.getElementById('passwordResetError');
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        errorDiv.style.display = 'none';
+        
+        try {
+            const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/reset-password.html`
+            });
+            
+            if (error) throw error;
+            
+            this.showNotification('Password reset email sent! Check your inbox.', 'success');
+            this.hidePasswordResetModal();
+        } catch (error) {
+            this.showError(error.message, 'passwordResetError');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Reset Email';
+        }
+    }
+
     async handleAuth(e) {
         e.preventDefault();
         
@@ -211,18 +269,24 @@ class DailyJournal {
                     this.showAuthModal('login');
                 }
             } else {
+                console.log('Attempting login with:', email);
                 const { data, error } = await this.supabase.auth.signInWithPassword({
                     email,
                     password
                 });
                 
-                if (error) throw error;
+                if (error) {
+                    console.error('Login error:', error);
+                    throw error;
+                }
                 
+                console.log('Login successful:', data);
                 this.user = data.user;
                 this.updateAuthUI(true);
                 this.hideAuthModal();
                 
                 // Re-initialize the app for logged-in user
+                console.log('Re-initializing app...');
                 await this.initializeLoggedInApp();
                 
                 this.showNotification('Logged in successfully!', 'success');
@@ -244,8 +308,8 @@ class DailyJournal {
         this.showNotification('Logged out successfully!', 'success');
     }
 
-    showError(message) {
-        const errorDiv = document.getElementById('authError');
+    showError(message, errorDivId = 'authError') {
+        const errorDiv = document.getElementById(errorDivId);
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
     }
