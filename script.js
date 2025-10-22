@@ -20,6 +20,10 @@ class DailyJournal {
         // Check for existing session
         await this.checkAuth();
         
+        // Add welcome screen event listeners (always needed)
+        document.getElementById('welcomeSignupBtn').addEventListener('click', () => this.showAuthModal('signup'));
+        document.getElementById('welcomeLoginBtn').addEventListener('click', () => this.showAuthModal('login'));
+        
         // Show welcome screen if not logged in
         if (!this.user) {
             this.showWelcomeScreen();
@@ -76,10 +80,6 @@ class DailyJournal {
             this.showAuthModal('login');
         });
         // Close button event listener - will be added when modal is shown
-
-        // Welcome screen event listeners
-        document.getElementById('welcomeSignupBtn').addEventListener('click', () => this.showAuthModal('signup'));
-        document.getElementById('welcomeLoginBtn').addEventListener('click', () => this.showAuthModal('login'));
 
         // Load and display entries
         await this.loadEntries();
