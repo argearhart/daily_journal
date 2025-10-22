@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Journal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-nav">
+                <h1>📔 Daily Journal</h1>
+                <div class="nav-buttons">
+                    <button id="journalTab" class="nav-btn active">📝 Journal</button>
+                    <button id="dashboardTab" class="nav-btn">📊 Dashboard</button>
+                    <button id="helpTab" class="nav-btn">❓ Help</button>
+                    <div class="auth-buttons">
+                        <button id="loginBtn" class="auth-btn">Login</button>
+                        <button id="signupBtn" class="auth-btn">Sign Up</button>
+                        <button id="logoutBtn" class="auth-btn" style="display: none;">Logout</button>
+                    </div>
+                </div>
+            </div>
+            <p>Log your daily experiences, feelings, food, and events</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Entry Form Section -->
+            <section class="entry-section">
+                <h2>Add New Entry</h2>
+                <form id="entryForm">
+                    <div class="form-group">
+                        <label for="entryType">Entry Type:</label>
+                        <select id="entryType" required>
+                            <option value="">Select type...</option>
+                            <option value="journal">📝 Journal</option>
+                            <option value="wellness">😊 Wellness</option>
+                            <option value="food">🍽️ Food</option>
+                            <option value="exercise">💪 Exercise</option>
+                            <option value="social">👥 Social</option>
+                            <option value="learning">📚 Learning</option>
+                            <option value="creative">🎨 Creative</option>
+                            <option value="events">📅 Events</option>
+                        </select>
+                    </div>
+
+                    <!-- Quick Add Buttons -->
+                    <div class="quick-add-section">
+                        <h3>Quick Add</h3>
+                        <div class="quick-add-buttons">
+                            <button type="button" class="quick-btn" data-type="wellness" data-mood="😊 Happy" data-energy="😊 Medium (4-6)">😊 Good Day</button>
+                            <button type="button" class="quick-btn" data-type="wellness" data-mood="😴 Tired" data-energy="😴 Low (1-3)">😴 Tired</button>
+                            <button type="button" class="quick-btn" data-type="exercise" data-exercise="🏃 Cardio" data-duration="30" data-intensity="🟡 Moderate">🏃 Quick Cardio</button>
+                            <button type="button" class="quick-btn" data-type="social" data-social="👥 Friends" data-energy="😊 Energizing">👥 Friends</button>
+                            <button type="button" class="quick-btn" data-type="learning" data-skill="JavaScript" data-time="30" data-status="🟢 Learning">📚 Study</button>
+                            <button type="button" class="quick-btn" data-type="creative" data-creative="🎨 Art" data-energy="💡 Inspired">🎨 Create</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entryTitle">Title:</label>
+                        <input type="text" id="entryTitle" placeholder="Enter a title..." required>
+                    </div>
+
+                    <div class="form-group" id="wellnessGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="wellnessMood">Mood:</label>
+                                <select id="wellnessMood">
+                                    <option value="">Select mood...</option>
+                                    <option value="😊 Happy">😊 Happy</option>
+                                    <option value="😌 Calm">😌 Calm</option>
+                                    <option value="😢 Sad">😢 Sad</option>
+                                    <option value="😠 Angry">😠 Angry</option>
+                                    <option value="😰 Anxious">😰 Anxious</option>
+                                    <option value="😴 Tired">😴 Tired</option>
+                                    <option value="😍 Excited">😍 Excited</option>
+                                </select>
+                            </div>
+                            <div class="form-group-half">
+                                <label for="wellnessEnergy">Energy Level:</label>
+                                <select id="wellnessEnergy">
+                                    <option value="">Select energy...</option>
+                                    <option value="😴 Low (1-3)">😴 Low (1-3)</option>
+                                    <option value="😊 Medium (4-6)">😊 Medium (4-6)</option>
+                                    <option value="⚡ High (7-10)">⚡ High (7-10)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="sleepHours">Sleep (hours):</label>
+                                <input type="number" id="sleepHours" min="1" max="24" step="0.5" placeholder="8">
+                            </div>
+                            <div class="form-group-half">
+                                <label for="sleepQuality">Sleep Quality:</label>
+                                <select id="sleepQuality">
+                                    <option value="">Select quality...</option>
+                                    <option value="😴 Poor">😴 Poor</option>
+                                    <option value="😊 Good">😊 Good</option>
+                                    <option value="😍 Excellent">😍 Excellent</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="exerciseGroup" style="display: none;">
+                        <label for="exerciseSelect">What type of exercise?</label>
+                        <select id="exerciseSelect">
+                            <option value="">Select exercise type...</option>
+                            <option value="🏃 Cardio">🏃 Cardio</option>
+                            <option value="🏋️ Strength">🏋️ Strength</option>
+                            <option value="🧘 Yoga/Stretch">🧘 Yoga/Stretch</option>
+                            <option value="🏊 Swimming">🏊 Swimming</option>
+                            <option value="⚽ Sports">⚽ Sports</option>
+                            <option value="🚶 Walking">🚶 Walking</option>
+                            <option value="💃 Dancing">💃 Dancing</option>
+                            <option value="🏹 Other">🏹 Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="exerciseDetailsGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="exerciseDuration">Duration (minutes):</label>
+                                <input type="number" id="exerciseDuration" min="1" max="300" placeholder="30">
+                            </div>
+                            <div class="form-group-half">
+                                <label for="exerciseIntensity">Intensity:</label>
+                                <select id="exerciseIntensity">
+                                    <option value="">Select intensity...</option>
+                                    <option value="🟢 Light">🟢 Light</option>
+                                    <option value="🟡 Moderate">🟡 Moderate</option>
+                                    <option value="🟠 Hard">🟠 Hard</option>
+                                    <option value="🔴 Very Hard">🔴 Very Hard</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Tracker -->
+                    <div class="form-group" id="socialGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="socialType">Social Activity:</label>
+                                <select id="socialType">
+                                    <option value="">Select activity...</option>
+                                    <option value="👥 Friends">👥 Friends</option>
+                                    <option value="💬 Phone Call">💬 Phone Call</option>
+                                    <option value="📱 Video Call">📱 Video Call</option>
+                                    <option value="🍽️ Meal Together">🍽️ Meal Together</option>
+                                    <option value="🎉 Event/Party">🎉 Event/Party</option>
+                                    <option value="🏢 Work Meeting">🏢 Work Meeting</option>
+                                    <option value="👨‍👩‍👧‍👦 Family">👨‍👩‍👧‍👦 Family</option>
+                                    <option value="💑 Date">💑 Date</option>
+                                </select>
+                            </div>
+                            <div class="form-group-half">
+                                <label for="socialEnergy">How did it feel?</label>
+                                <select id="socialEnergy">
+                                    <option value="">Select feeling...</option>
+                                    <option value="😊 Energizing">😊 Energizing</option>
+                                    <option value="😌 Neutral">😌 Neutral</option>
+                                    <option value="😔 Draining">😔 Draining</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning/Skills Tracker -->
+                    <div class="form-group" id="learningGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="skillName">Skill/Subject:</label>
+                                <input type="text" id="skillName" placeholder="e.g., JavaScript, Piano">
+                            </div>
+                            <div class="form-group-half">
+                                <label for="learningTime">Time (minutes):</label>
+                                <input type="number" id="learningTime" min="1" max="480" placeholder="30">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="skillStatus">Status:</label>
+                                <select id="skillStatus">
+                                    <option value="">Select status...</option>
+                                    <option value="🟢 Learning">🟢 Learning</option>
+                                    <option value="🟡 Practicing">🟡 Practicing</option>
+                                    <option value="🔴 Inactive">🔴 Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group-half">
+                                <label for="learningMethod">Method:</label>
+                                <select id="learningMethod">
+                                    <option value="">Select method...</option>
+                                    <option value="📚 Reading">📚 Reading</option>
+                                    <option value="🎥 Video">🎥 Video</option>
+                                    <option value="✍️ Practice">✍️ Practice</option>
+                                    <option value="💻 Online">💻 Online</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Creative Activities Tracker -->
+                    <div class="form-group" id="creativeGroup" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group-half">
+                                <label for="creativeType">Creative Activity:</label>
+                                <select id="creativeType">
+                                    <option value="">Select activity...</option>
+                                    <option value="🎨 Art">🎨 Art</option>
+                                    <option value="✍️ Writing">✍️ Writing</option>
+                                    <option value="🎵 Music">🎵 Music</option>
+                                    <option value="📸 Photography">📸 Photography</option>
+                                    <option value="🧵 Crafting">🧵 Crafting</option>
+                                    <option value="🍳 Cooking">🍳 Cooking</option>
+                                    <option value="🌱 Gardening">🌱 Gardening</option>
+                                    <option value="💡 Other">💡 Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group-half">
+                                <label for="creativeEnergy">How creative?</label>
+                                <select id="creativeEnergy">
+                                    <option value="">Select level...</option>
+                                    <option value="💡 Inspired">💡 Inspired</option>
+                                    <option value="😊 Productive">😊 Productive</option>
+                                    <option value="😌 Relaxed">😌 Relaxed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entryContent">Content:</label>
+                        <textarea id="entryContent" rows="4" placeholder="Write your entry here..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entryDate">Date:</label>
+                        <input type="date" id="entryDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entryTime">Time:</label>
+                        <input type="time" id="entryTime">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entryTags">Tags (comma-separated):</label>
+                        <input type="text" id="entryTags" placeholder="e.g., happy, work, family">
+                    </div>
+
+                    <button type="submit">Add Entry</button>
+                </form>
+            </section>
+
+            <!-- Search Section -->
+            <section class="search-section">
+                <h2>Search Entries</h2>
+                <div class="search-controls">
+                    <input type="text" id="searchInput" placeholder="Search entries...">
+                    <select id="searchType">
+                        <option value="all">All Types</option>
+                        <option value="journal">Journal</option>
+                        <option value="wellness">Wellness</option>
+                        <option value="food">Food</option>
+                        <option value="exercise">Exercise</option>
+                        <option value="social">Social</option>
+                        <option value="learning">Learning</option>
+                        <option value="creative">Creative</option>
+                        <option value="events">Events</option>
+                    </select>
+                    <input type="date" id="searchDate" placeholder="Filter by date">
+                    <input type="time" id="searchTime" placeholder="Filter by time">
+                    <button id="searchBtn">Search</button>
+                    <button id="clearBtn">Clear</button>
+                </div>
+            </section>
+
+            <!-- Entries Display Section -->
+            <section class="entries-section">
+                <h2>Your Entries</h2>
+                <div id="entriesContainer">
+                    <p class="no-entries">No entries yet. Add your first entry above!</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="dashboard-section" style="display: none;">
+            <h2>📊 Your Dashboard</h2>
+            
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>📅 This Week</h3>
+                    <div class="metric">
+                        <span class="metric-value" id="weekEntries">0</span>
+                        <span class="metric-label">Entries</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <h3>😊 Mood</h3>
+                    <div class="metric">
+                        <span class="metric-value" id="avgMood">-</span>
+                        <span class="metric-label">Average</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <h3>⚡ Energy</h3>
+                    <div class="metric">
+                        <span class="metric-value" id="avgEnergy">-</span>
+                        <span class="metric-label">Average</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <h3>😴 Sleep</h3>
+                    <div class="metric">
+                        <span class="metric-value" id="avgSleep">-</span>
+                        <span class="metric-label">Hours</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3>📈 Mood & Energy Trends</h3>
+                    <canvas id="moodEnergyChart" width="400" height="200"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>🏃 Activity Distribution</h3>
+                    <canvas id="activityChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Quick Insights -->
+            <div class="insights-section">
+                <h3>💡 Quick Insights</h3>
+                <div id="insightsList" class="insights-list">
+                    <!-- Insights will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Data Export -->
+            <div class="export-section">
+                <h3>📤 Export Data</h3>
+                <button id="exportData" class="export-btn">Download CSV</button>
+                <button id="clearData" class="clear-btn">Clear All Data</button>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div id="helpSection" class="help-section" style="display: none;">
+            <h2>❓ How to Use Your Daily Journal</h2>
+            
+            <!-- Getting Started -->
+            <div class="help-card">
+                <h3>🚀 Getting Started</h3>
+                <div class="help-content">
+                    <p><strong>1. Create Your Account:</strong> Click "Sign Up" to create your personal journal account.</p>
+                    <p><strong>2. Start Logging:</strong> Use the quick-add buttons for fast entries or fill out detailed forms.</p>
+                    <p><strong>3. View Your Progress:</strong> Check the Dashboard to see your patterns and insights.</p>
+                </div>
+            </div>
+
+            <!-- Quick Add Guide -->
+            <div class="help-card">
+                <h3>⚡ Quick Add Buttons</h3>
+                <div class="help-content">
+                    <p>Use these buttons to quickly log common activities:</p>
+                    <ul>
+                        <li><strong>😊 Good Day:</strong> Log positive mood and energy</li>
+                        <li><strong>😴 Tired:</strong> Record low energy and sleep needs</li>
+                        <li><strong>🏃 Quick Cardio:</strong> Log a 30-minute cardio session</li>
+                        <li><strong>👥 Friends:</strong> Record social interactions</li>
+                        <li><strong>📚 Study:</strong> Track learning activities</li>
+                        <li><strong>🎨 Create:</strong> Log creative work</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Entry Types Guide -->
+            <div class="help-card">
+                <h3>📝 Entry Types Explained</h3>
+                <div class="help-content">
+                    <div class="entry-type-guide">
+                        <div class="type-item">
+                            <span class="type-badge wellness">Wellness</span>
+                            <p>Track your mood, energy levels, sleep hours, and sleep quality all in one place.</p>
+                        </div>
+                        <div class="type-item">
+                            <span class="type-badge exercise">Exercise</span>
+                            <p>Log workout type, duration, and intensity to track your fitness progress.</p>
+                        </div>
+                        <div class="type-item">
+                            <span class="type-badge social">Social</span>
+                            <p>Record social interactions and how they affect your energy.</p>
+                        </div>
+                        <div class="type-item">
+                            <span class="type-badge learning">Learning</span>
+                            <p>Track skills you're developing, study time, and learning methods.</p>
+                        </div>
+                        <div class="type-item">
+                            <span class="type-badge creative">Creative</span>
+                            <p>Log creative activities and projects you're working on.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Guide -->
+            <div class="help-card">
+                <h3>📊 Dashboard Features</h3>
+                <div class="help-content">
+                    <p><strong>Summary Cards:</strong> Quick overview of your week's activity, average mood, energy, and sleep.</p>
+                    <p><strong>Trend Charts:</strong> Visual representation of your mood and energy patterns over time.</p>
+                    <p><strong>Activity Distribution:</strong> See how you spend your time across different activities.</p>
+                    <p><strong>Insights:</strong> Personalized observations about your patterns and progress.</p>
+                    <p><strong>Export Data:</strong> Download your entries as CSV for external analysis.</p>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="help-card">
+                <h3>💡 Tips for Better Journaling</h3>
+                <div class="help-content">
+                    <ul>
+                        <li><strong>Be Consistent:</strong> Try to log entries daily, even if brief</li>
+                        <li><strong>Use Quick Add:</strong> Don't overthink - quick entries are better than no entries</li>
+                        <li><strong>Check Your Dashboard:</strong> Review your patterns weekly to spot trends</li>
+                        <li><strong>Export Regularly:</strong> Download your data as a backup</li>
+                        <li><strong>Be Honest:</strong> Accurate logging leads to better insights</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Privacy -->
+            <div class="help-card">
+                <h3>🔒 Privacy & Security</h3>
+                <div class="help-content">
+                    <p><strong>Your Data is Private:</strong> Only you can see your entries. Each user has their own secure account.</p>
+                    <p><strong>Secure Storage:</strong> All data is encrypted and stored securely in the cloud.</p>
+                    <p><strong>Access Anywhere:</strong> Your journal syncs across all your devices automatically.</p>
+                    <p><strong>You Own Your Data:</strong> Export and download your entries anytime.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="authTitle">Login</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authEmail">Email:</label>
+                    <input type="email" id="authEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password:</label>
+                    <input type="password" id="authPassword" required>
+                </div>
+                <button type="submit" id="authSubmitBtn">Login</button>
+            </form>
+            <p id="authSwitch">
+                Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
+            </p>
+            <div id="authError" class="error-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
