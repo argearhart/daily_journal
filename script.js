@@ -30,6 +30,11 @@ class DailyJournal {
             return;
         }
         
+        // Initialize logged-in app
+        await this.initializeLoggedInApp();
+    }
+
+    async initializeLoggedInApp() {
         // Set today's date and current time as default
         const now = new Date();
         document.getElementById('entryDate').value = now.toISOString().split('T')[0];
@@ -216,8 +221,10 @@ class DailyJournal {
                 this.user = data.user;
                 this.updateAuthUI(true);
                 this.hideAuthModal();
-                await this.loadEntries();
-                this.displayEntries();
+                
+                // Re-initialize the app for logged-in user
+                await this.initializeLoggedInApp();
+                
                 this.showNotification('Logged in successfully!', 'success');
             }
         } catch (error) {
