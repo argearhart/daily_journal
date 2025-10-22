@@ -188,8 +188,7 @@ class DailyJournal {
             title: document.getElementById('entryTitle').value,
             content: document.getElementById('entryContent').value,
             date: document.getElementById('entryDate').value,
-            time: document.getElementById('entryTime').value,
-            tags: [] // Initialize tags as empty array
+            time: document.getElementById('entryTime').value
         };
 
         // Add wellness data if it's a wellness entry
@@ -281,7 +280,7 @@ class DailyJournal {
             const matchesText = !searchText || 
                 entry.title.toLowerCase().includes(searchText) ||
                 entry.content.toLowerCase().includes(searchText) ||
-                entry.tags.some(tag => tag.toLowerCase().includes(searchText)) ||
+                (entry.tags && Array.isArray(entry.tags) && entry.tags.some(tag => tag.toLowerCase().includes(searchText))) ||
                 (entry.mood && entry.mood.toLowerCase().includes(searchText)) ||
                 (entry.energy && entry.energy.toLowerCase().includes(searchText)) ||
                 (entry.sleep_quality && entry.sleep_quality.toLowerCase().includes(searchText)) ||
@@ -345,7 +344,7 @@ class DailyJournal {
             events: '📅 Events'
         };
 
-        const tagsHTML = (entry.tags && entry.tags.length > 0) 
+        const tagsHTML = (entry.tags && Array.isArray(entry.tags) && entry.tags.length > 0) 
             ? `<div class="entry-tags">${entry.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
             : '';
 
