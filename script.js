@@ -760,15 +760,15 @@ class DailyJournal {
                 datasets: [{
                     label: 'Mood',
                     data: moodData,
-                    borderColor: '#fbb6ce',
-                    backgroundColor: 'rgba(251, 182, 206, 0.1)',
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
                     tension: 0.4,
                     fill: false
                 }, {
                     label: 'Energy',
                     data: energyData,
-                    borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderColor: '#1e40af',
+                    backgroundColor: 'rgba(30, 64, 175, 0.1)',
                     tension: 0.4,
                     fill: false
                 }]
@@ -806,11 +806,11 @@ class DailyJournal {
         const labels = Object.keys(activityCounts);
         const data = Object.values(activityCounts);
         const colors = {
-            'wellness': '#fbb6ce',
-            'exercise': '#f56565',
-            'social': '#48bb78',
-            'learning': '#4299e1',
-            'creative': '#ed8936',
+            'wellness': '#3b82f6',
+            'exercise': '#1e40af',
+            'social': '#60a5fa',
+            'learning': '#2563eb',
+            'creative': '#1d4ed8',
             'food': '#9f7aea',
             'event': '#38b2ac'
         };

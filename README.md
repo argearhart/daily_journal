@@ -1,4 +1,4 @@
-# 📔 Daily Journal App
+# 🖋️ MindQuill
 
 A comprehensive daily journaling application with tracking for wellness, exercise, social interactions, learning, and creative activities. Built with modern web technologies and designed for personal growth and habit tracking.
 
@@ -66,7 +66,7 @@ After deployment, update your Supabase project:
 ## 📁 Project Structure
 
 ```
-daily_journal/
+mindquill/
 ├── index.html          # Main application
 ├── styles.css          # Styling and responsive design
 ├── script.js           # Application logic and Supabase integration
