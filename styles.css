@@ -440,10 +440,14 @@ button:active {
     border-color: #cbd5e0;
 }
 
-.nav-btn.active {
-    background: #3b82f6;
+.nav-btn.logout-btn {
+    background: #dc2626;
     color: white;
-    border-color: #3b82f6;
+    margin-left: auto;
+}
+
+.nav-btn.logout-btn:hover {
+    background: #b91c1c;
 }
 
 .auth-buttons {
