@@ -116,9 +116,10 @@ class DailyJournal {
         const socialGroup = document.getElementById('socialGroup');
         const learningGroup = document.getElementById('learningGroup');
         const creativeGroup = document.getElementById('creativeGroup');
+        const careerGroup = document.getElementById('careerGroup');
         
         // Hide all groups first
-        [wellnessGroup, exerciseGroup, exerciseDetailsGroup, socialGroup, learningGroup, creativeGroup].forEach(group => {
+        [wellnessGroup, exerciseGroup, exerciseDetailsGroup, socialGroup, learningGroup, creativeGroup, careerGroup].forEach(group => {
             group.style.display = 'none';
         });
         
@@ -143,6 +144,9 @@ class DailyJournal {
                 break;
             case 'creative':
                 creativeGroup.style.display = 'block';
+                break;
+            case 'career':
+                careerGroup.style.display = 'block';
                 break;
         }
         
@@ -171,6 +175,11 @@ class DailyJournal {
         if (entryType !== 'creative') {
             document.getElementById('creativeType').value = '';
             document.getElementById('creativeEnergy').value = '';
+        }
+        if (entryType !== 'career') {
+            document.getElementById('careerActivity').value = '';
+            document.getElementById('careerFeeling').value = '';
+            document.getElementById('careerHours').value = '';
         }
     }
 
@@ -226,6 +235,13 @@ class DailyJournal {
             formData.creative_energy = document.getElementById('creativeEnergy').value;
         }
 
+        // Add career data if it's a career entry
+        if (formData.type === 'career') {
+            formData.career_activity = document.getElementById('careerActivity').value;
+            formData.career_feeling = document.getElementById('careerFeeling').value;
+            formData.career_hours = document.getElementById('careerHours').value;
+        }
+
         await this.addEntry(formData);
         this.clearForm();
     }
@@ -261,7 +277,7 @@ class DailyJournal {
         document.getElementById('entryTime').value = now.toTimeString().slice(0, 5);
         
         // Hide all tracker groups
-        const groups = ['wellnessGroup', 'exerciseGroup', 'exerciseDetailsGroup', 'socialGroup', 'learningGroup', 'creativeGroup'];
+        const groups = ['wellnessGroup', 'exerciseGroup', 'exerciseDetailsGroup', 'socialGroup', 'learningGroup', 'creativeGroup', 'careerGroup'];
         groups.forEach(groupId => {
             document.getElementById(groupId).style.display = 'none';
         });
@@ -292,7 +308,9 @@ class DailyJournal {
                 (entry.skill_status && entry.skill_status.toLowerCase().includes(searchText)) ||
                 (entry.learning_method && entry.learning_method.toLowerCase().includes(searchText)) ||
                 (entry.creative_type && entry.creative_type.toLowerCase().includes(searchText)) ||
-                (entry.creative_energy && entry.creative_energy.toLowerCase().includes(searchText));
+                (entry.creative_energy && entry.creative_energy.toLowerCase().includes(searchText)) ||
+                (entry.career_activity && entry.career_activity.toLowerCase().includes(searchText)) ||
+                (entry.career_feeling && entry.career_feeling.toLowerCase().includes(searchText));
             
             const matchesType = searchType === 'all' || entry.type === searchType;
             
@@ -341,6 +359,7 @@ class DailyJournal {
             social: '👥 Social',
             learning: '📚 Learning',
             creative: '🎨 Creative',
+            career: '💼 Career',
             events: '📅 Events'
         };
 
@@ -392,6 +411,15 @@ class DailyJournal {
                </div>`
             : '';
 
+        const careerHTML = entry.career_activity || entry.career_feeling || entry.career_hours
+            ? `<div class="entry-career">
+                <strong>Career:</strong>
+                ${entry.career_activity ? `<span class="tracker-detail"> ${entry.career_activity}</span>` : ''}
+                ${entry.career_feeling ? `<span class="tracker-detail"> • ${entry.career_feeling}</span>` : ''}
+                ${entry.career_hours ? `<span class="tracker-detail"> • ${entry.career_hours}h worked</span>` : ''}
+               </div>`
+            : '';
+
         const timeHTML = entry.time 
             ? `<span class="entry-time">${this.formatTime(entry.time)}</span>`
             : '';
@@ -411,6 +439,7 @@ class DailyJournal {
                 ${socialHTML}
                 ${learningHTML}
                 ${creativeHTML}
+                ${careerHTML}
                 <div class="entry-content">${this.escapeHtml(entry.content)}</div>
                 ${tagsHTML}
             </div>
@@ -711,6 +740,7 @@ class DailyJournal {
             'social': '#60a5fa',
             'learning': '#2563eb',
             'creative': '#1d4ed8',
+            'career': '#f59e0b',
             'food': '#9f7aea',
             'event': '#38b2ac'
         };
@@ -827,7 +857,7 @@ class DailyJournal {
     }
 
     generateCSV() {
-        const headers = ['Date', 'Time', 'Type', 'Title', 'Content', 'Mood', 'Energy', 'Sleep Hours', 'Sleep Quality', 'Exercise Type', 'Duration', 'Intensity', 'Social Type', 'Social Energy', 'Skill', 'Learning Time', 'Status', 'Learning Method', 'Creative Type', 'Creative Energy'];
+        const headers = ['Date', 'Time', 'Type', 'Title', 'Content', 'Mood', 'Energy', 'Sleep Hours', 'Sleep Quality', 'Exercise Type', 'Duration', 'Intensity', 'Social Type', 'Social Energy', 'Skill', 'Learning Time', 'Status', 'Learning Method', 'Creative Type', 'Creative Energy', 'Career Activity', 'Career Feeling', 'Career Hours'];
         const rows = [headers.join(',')];
         
         this.entries.forEach(entry => {
@@ -851,7 +881,10 @@ class DailyJournal {
                 entry.skill_status || '',
                 entry.learning_method || '',
                 entry.creative_type || '',
-                entry.creative_energy || ''
+                entry.creative_energy || '',
+                entry.career_activity || '',
+                entry.career_feeling || '',
+                entry.career_hours || ''
             ];
             rows.push(row.join(','));
         });
@@ -952,6 +985,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (type === 'creative') {
                 if (creative) document.getElementById('creativeType').value = creative;
                 if (energy) document.getElementById('creativeEnergy').value = energy;
+            } else if (type === 'career') {
+                const activity = e.target.dataset.activity;
+                const feeling = e.target.dataset.feeling;
+                const hours = e.target.dataset.hours;
+                if (activity) document.getElementById('careerActivity').value = activity;
+                if (feeling) document.getElementById('careerFeeling').value = feeling;
+                if (hours) document.getElementById('careerHours').value = hours;
             }
             
             // Focus on content field for user to add details

@@ -294,6 +294,11 @@ button:active {
     color: #553c9a;
 }
 
+.entry-type.career {
+    background: #fef3c7;
+    color: #92400e;
+}
+
 .entry-type.events {
     background: #faf089;
     color: #744210;
@@ -371,6 +376,15 @@ button:active {
 .entry-creative {
     background: #f7fafc;
     border-left: 4px solid #faf5ff;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 4px;
+    color: #4a5568;
+}
+
+.entry-career {
+    background: #f7fafc;
+    border-left: 4px solid #fef3c7;
     padding: 8px 12px;
     margin: 10px 0;
     border-radius: 4px;
@@ -922,6 +936,11 @@ button:active {
 
 .type-badge.creative {
     background: #ed8936;
+    color: white;
+}
+
+.type-badge.career {
+    background: #f59e0b;
     color: white;
 }
 
