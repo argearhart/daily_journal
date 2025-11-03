@@ -17,6 +17,15 @@ class DailyJournal {
     }
 
     async initializeApp() {
+        // Check for password reset token in URL
+        const urlHash = window.location.hash;
+        if (urlHash.includes('type=recovery') || urlHash.includes('access_token')) {
+            // User is coming from password reset link
+            // Redirect to login page which will handle the password reset
+            window.location.href = 'login.html' + urlHash;
+            return;
+        }
+        
         // Check for existing session
         await this.checkAuth();
         
@@ -242,6 +251,12 @@ class DailyJournal {
             formData.career_hours = document.getElementById('careerHours').value;
         }
 
+        // Add tags if provided
+        const tagsInput = document.getElementById('entryTags').value.trim();
+        if (tagsInput) {
+            formData.tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+        }
+
         await this.addEntry(formData);
         this.clearForm();
     }
@@ -275,6 +290,9 @@ class DailyJournal {
         const now = new Date();
         document.getElementById('entryDate').value = now.toISOString().split('T')[0];
         document.getElementById('entryTime').value = now.toTimeString().slice(0, 5);
+        
+        // Clear tags input
+        document.getElementById('entryTags').value = '';
         
         // Hide all tracker groups
         const groups = ['wellnessGroup', 'exerciseGroup', 'exerciseDetailsGroup', 'socialGroup', 'learningGroup', 'creativeGroup', 'careerGroup'];

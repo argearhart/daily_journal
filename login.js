@@ -3,7 +3,16 @@ class LoginManager {
     constructor() {
         this.supabase = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
         this.currentForm = 'login';
+        this.isRecoverySession = false;
         this.initializeLogin();
+        
+        // Listen for auth state changes (e.g., when password reset token is processed)
+        this.supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && window.location.hash.includes('type=recovery'))) {
+                this.isRecoverySession = true;
+                this.showPasswordChangeForm();
+            }
+        });
     }
 
     initializeLogin() {
@@ -34,11 +43,131 @@ class LoginManager {
         this.switchToSignup.addEventListener('click', (e) => this.switchToSignupForm(e));
         this.forgotPassword.addEventListener('click', (e) => this.switchToResetForm(e));
         
+        // Check for password reset token in URL
+        this.checkPasswordResetToken();
+        
         // Check if user is already logged in
         this.checkExistingSession();
     }
 
+    async checkPasswordResetToken() {
+        const urlHash = window.location.hash;
+        if (urlHash.includes('type=recovery') || urlHash.includes('access_token')) {
+            // Wait a moment for Supabase to process the hash
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Check if we have a recovery session
+            const { data: { session } } = await this.supabase.auth.getSession();
+            if (session) {
+                this.isRecoverySession = true;
+                this.showPasswordChangeForm();
+            }
+        }
+    }
+
+    showPasswordChangeForm() {
+        // Hide all forms
+        this.loginForm.style.display = 'none';
+        this.signupForm.style.display = 'none';
+        this.resetForm.style.display = 'none';
+        
+        // Create password change form if it doesn't exist
+        let passwordChangeForm = document.getElementById('passwordChangeForm');
+        if (!passwordChangeForm) {
+            passwordChangeForm = document.createElement('form');
+            passwordChangeForm.id = 'passwordChangeForm';
+            passwordChangeForm.innerHTML = `
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" name="new-password" autocomplete="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmNewPassword" name="confirm-password" autocomplete="new-password" required>
+                </div>
+                <button type="submit" id="changePasswordBtn" class="auth-btn">Change Password</button>
+            `;
+            this.loginForm.parentNode.insertBefore(passwordChangeForm, this.loginForm);
+            
+            passwordChangeForm.addEventListener('submit', (e) => this.handlePasswordChange(e));
+        }
+        
+        passwordChangeForm.style.display = 'block';
+        this.switchText.innerHTML = '<p>Enter your new password below</p>';
+        this.clearMessages();
+    }
+
+    async handlePasswordChange(e) {
+        e.preventDefault();
+        console.log('Password change form submitted');
+        
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmNewPassword').value;
+        
+        if (newPassword !== confirmPassword) {
+            this.showError('Passwords do not match');
+            return;
+        }
+        
+        if (newPassword.length < 6) {
+            this.showError('Password must be at least 6 characters');
+            return;
+        }
+        
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        this.setButtonLoading(changePasswordBtn, true);
+        this.clearMessages();
+        
+        try {
+            // Check if we have a session
+            const { data: { session }, error: sessionError } = await this.supabase.auth.getSession();
+            
+            if (sessionError || !session) {
+                console.error('Session error:', sessionError);
+                throw new Error('Invalid or expired reset link. Please request a new password reset.');
+            }
+            
+            // Update the password
+            const { error: updateError } = await this.supabase.auth.updateUser({
+                password: newPassword
+            });
+            
+            if (updateError) {
+                console.error('Password update error:', updateError);
+                throw updateError;
+            }
+            
+            console.log('Password changed successfully');
+            this.showSuccess('Password changed successfully! You can now login with your new password.');
+            
+            // Reset the recovery session flag and clear URL hash
+            this.isRecoverySession = false;
+            
+            // Clear the URL hash and show login form after a short delay
+            setTimeout(() => {
+                window.location.hash = '';
+                window.history.replaceState(null, '', 'login.html');
+                this.switchToLoginForm({ preventDefault: () => {} });
+                
+                // Sign out to clear the recovery session
+                this.supabase.auth.signOut();
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Password change failed:', error);
+            this.showError(error.message || 'Failed to change password. The reset link may have expired.');
+        } finally {
+            this.setButtonLoading(changePasswordBtn, false);
+        }
+    }
+
     async checkExistingSession() {
+        // Don't redirect if we're handling a password reset
+        const urlHash = window.location.hash;
+        if (urlHash.includes('type=recovery') || urlHash.includes('access_token') || this.isRecoverySession) {
+            return;
+        }
+        
         const { data: { session } } = await this.supabase.auth.getSession();
         if (session) {
             // User is already logged in, redirect to main app
@@ -62,9 +191,17 @@ class LoginManager {
     switchToLoginForm(e) {
         e.preventDefault();
         this.currentForm = 'login';
+        this.isRecoverySession = false;
         this.loginForm.style.display = 'block';
         this.signupForm.style.display = 'none';
         this.resetForm.style.display = 'none';
+        
+        // Hide password change form if it exists
+        const passwordChangeForm = document.getElementById('passwordChangeForm');
+        if (passwordChangeForm) {
+            passwordChangeForm.style.display = 'none';
+        }
+        
         this.switchText.innerHTML = 'Don\'t have an account? <a href="#" id="switchToSignup">Sign up</a>';
         this.clearMessages();
         
@@ -185,7 +322,7 @@ class LoginManager {
         try {
             console.log('Attempting password reset for:', email);
             const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/index.html`
+                redirectTo: `${window.location.origin}/login.html`
             });
             
             if (error) {
@@ -194,7 +331,7 @@ class LoginManager {
             }
             
             console.log('Password reset email sent');
-            this.showSuccess('Password reset email sent! Check your inbox.');
+            this.showSuccess('Password reset email sent! Check your inbox and click the link to reset your password.');
             
         } catch (error) {
             console.error('Password reset failed:', error);
@@ -216,6 +353,8 @@ class LoginManager {
                 button.textContent = 'Sign Up';
             } else if (button === this.resetBtn) {
                 button.textContent = 'Send Reset Email';
+            } else if (button && button.id === 'changePasswordBtn') {
+                button.textContent = 'Change Password';
             }
         }
     }
